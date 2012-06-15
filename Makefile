@@ -2,10 +2,17 @@ PLATFORM = $(shell gcc -dumpmachine)
 
 ifeq ($(PLATFORM), x86_64-redhat-linux)
 DYNLIB = libshared.so
+$(DYNLIB): CXXFLAGS += -fPIC -Wl,-soname,$(DYNLIB) -shared
+endif
+
+ifeq ($(PLATFORM), i686-apple-darwin10)
+DYNLIB = libshared.dylib
+$(DYNLIB): CXXFLAGS += -dynamiclib
 endif
 
 ifeq ($(PLATFORM), mingw32)
 DYNLIB = shared.dll
+$(DYNLIB): CXXFLAGS += -shared
 endif
 
 ifndef DYNLIB
@@ -15,9 +22,8 @@ endif
 main: main.o $(DYNLIB)
 	$(CXX) -o main  main.o -L. -lshared
 
-$(DYNLIB): shared.cpp
-	$(CXX) -fPIC -c shared.cpp -o shared.o
-	$(CXX) -shared -Wl,-soname,$(DYNLIB) -o $@ shared.o
+$(DYNLIB): shared.o
+	$(CXX) $(CXXFLAGS) -o $@ shared.o
 
 clean:
-	rm *.o *.so main
+	rm *.o $(DYNLIB) main
