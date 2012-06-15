@@ -1,10 +1,11 @@
+class myclass
+{
+    int myx;
 
-  class myclass {
-         int myx;
-
-               public:
-
-                       myclass() { myx=0; }
-                               void setx(int newx);
-                                       int  getx();
-                                         };
+public:
+    myclass() {
+        myx=0;
+    }
+    void setx(int newx);
+    int  getx();
+};

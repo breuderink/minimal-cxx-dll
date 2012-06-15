@@ -1,4 +1,11 @@
- #include "shared.h"
+#include "shared.h"
 
-   void myclass::setx(int newx) { myx = newx; }
-     int  myclass::getx() { return 2 * myx; }
+void myclass::setx(int newx)
+{
+    myx = newx;
+}
+
+int  myclass::getx()
+{
+    return 2 * myx;
+}
