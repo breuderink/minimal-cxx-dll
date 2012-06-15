@@ -1,5 +1,5 @@
-nclude <iostream>
-  #include "shared.h"
+#include <iostream>
+#include "shared.h"
 
     using namespace std;
 

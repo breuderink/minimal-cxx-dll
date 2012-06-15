@@ -1,9 +1,23 @@
-main: libshared.so main.o
+PLATFORM = $(shell gcc -dumpmachine)
+
+ifeq ($(PLATFORM), x86_64-redhat-linux)
+DYNLIB = libshared.so
+endif
+
+ifeq ($(PLATFORM), mingw32)
+DYNLIB = shared.dll
+endif
+
+ifndef DYNLIB
+$(error Unsupported platform: $(PLATFORM))
+endif
+
+main: main.o $(DYNLIB)
 	$(CXX) -o main  main.o -L. -lshared
 
-libshared.so: shared.cpp
+$(DYNLIB): shared.cpp
 	$(CXX) -fPIC -c shared.cpp -o shared.o
-	$(CXX) -shared  -Wl,-soname,libshared.so -o libshared.so shared.o
+	$(CXX) -shared -Wl,-soname,$(DYNLIB) -o $@ shared.o
 
 clean:
-	$rm *.o *.so
+	rm *.o *.so main
