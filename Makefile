@@ -19,11 +19,13 @@ ifndef DYNLIB
 $(error Unsupported platform: $(PLATFORM))
 endif
 
+# ---
+
 main: main.o $(DYNLIB)
 	$(CXX) -o main  main.o -L. -lshared
 
-$(DYNLIB): shared.o
-	$(CXX) $(CXXFLAGS) -o $@ shared.o
+$(DYNLIB): shared.cpp
+	$(CXX) $(CXXFLAGS) -o $@ shared.cpp
 
 clean:
 	rm *.o $(DYNLIB) main
